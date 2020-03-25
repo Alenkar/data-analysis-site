@@ -1,0 +1,5 @@
+werkzeug
+wtforms
+flask
+flask_sqlalchemy
+flask_migrate

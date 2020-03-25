@@ -1,1 +1,4 @@
-# data-analysis-site
+# Data Analysis Site
+Данный репозиторий содержит сайт для анализа данных.
+
+Реализация на _Python3_, _Flask_.
