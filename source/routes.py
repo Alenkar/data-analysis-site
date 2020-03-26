@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from source import db
 from source import app
 from source.forms import LoginForm, RegistrationForm
@@ -76,18 +78,22 @@ def user(username):
     return render_template('user.html', user=user, posts=post)
 
 
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+
+
 @app.route('/charts')
 #@login_required
 def charts():
-    # labels = ['January', 'February', 'March',
-    #          'April', 'May', 'June', 'July',
-    #          'August', 'September', 'October',
-    #          'November', 'December']
-    labels = [0, 1, 2,
-              3, 4, 5, 6,
-              7, 8, 9,
-              10, 11]
-    data = [0, 1, 0]
+    import random
+    labels = []
+    data = []
+    for i in range(20):
+        labels.append(i)
+        data.append(random.uniform(0.1, 3.0))
     label_name = "Test data"
     return render_template('charts.html',
                            data=data,

@@ -13,7 +13,10 @@
 	<button id="removeDataset">Remove Dataset</button>
 	<button id="addData">Add Data</button>
 	<button id="removeData">Remove Data</button>
+	<button id="randomEventStart">Randomize event start</button>
+	<button id="randomEventStop">Randomize event stop</button>
 	<script>
+		var intervalID = 0;
 		var labels = {{ labels|tojson }};
 		var config = {
 			type: 'line',
@@ -65,14 +68,30 @@
 			window.myLine = new Chart(ctx, config);
 		};
 
+
+		document.getElementById('randomEventStart').addEventListener('click', function() {
+			intervalID = setInterval(() => {
+			config.data.datasets.forEach(function(dataset) {
+				dataset.data = dataset.data.map(function() {
+					return randomScalingFactor();
+				});
+			});
+			window.myLine.update();
+			}
+			, 1000);
+		});
+
+		document.getElementById('randomEventStop').addEventListener('click', function() {
+			clearTimeout(intervalID);
+		});
+
+
 		document.getElementById('randomizeData').addEventListener('click', function() {
 			config.data.datasets.forEach(function(dataset) {
 				dataset.data = dataset.data.map(function() {
 					return randomScalingFactor();
 				});
-
 			});
-
 			window.myLine.update();
 		});
 
@@ -123,5 +142,8 @@
 
 			window.myLine.update();
 		});
+
+
+
 	</script>
 {% endblock %}
