@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<title>Scatter</title>
+	<script src="static/js/Chart.min.js"></script>
+	<script src="static/js/utils.js"></script>
+
+<div style="width:75%">
+		<canvas id="canvas"></canvas>
+	</div>
+	<button id="randomizeData">Randomize Data</button>
+	<script>
+		var color = Chart.helpers.color;
+		function generateData() {
+			var data = [];
+			for (var i = 0; i < 7; i++) {
+				data.push({
+					x: randomScalingFactor(),
+					y: randomScalingFactor()
+				});
+			}
+			console.log(data);
+			return data;
+		}
+
+		var scatterChartData = {
+			datasets: [{
+				label: {{ label_name|tojson }},
+				borderColor: window.chartColors.red,
+				backgroundColor: color(window.chartColors.red).alpha(0.2).rgbString(),
+				data: {{ data|tojson }}
+			}]
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myScatter = Chart.Scatter(ctx, {
+				data: scatterChartData,
+				options: {
+					title: {
+						display: true,
+						text: 'Chart.js Scatter Chart'
+					},
+				}
+			});
+		};
+
+		document.getElementById('randomizeData').addEventListener('click', function() {
+			scatterChartData.datasets.forEach(function(dataset) {
+				dataset.data = dataset.data.map(function() {
+					return {
+						x: randomScalingFactor(),
+						y: randomScalingFactor()
+					};
+				});
+			});
+			window.myScatter.update();
+		});
+	</script>
+{% endblock %}

@@ -74,3 +74,35 @@ def user(username):
         {'author': user, 'body': 'Test'}
     ]
     return render_template('user.html', user=user, posts=post)
+
+
+@app.route('/charts')
+#@login_required
+def charts():
+    # labels = ['January', 'February', 'March',
+    #          'April', 'May', 'June', 'July',
+    #          'August', 'September', 'October',
+    #          'November', 'December']
+    labels = [0, 1, 2,
+              3, 4, 5, 6,
+              7, 8, 9,
+              10, 11]
+    data = [0, 1, 0]
+    label_name = "Test data"
+    return render_template('charts.html',
+                           data=data,
+                           label_name=label_name,
+                           labels=labels)
+
+
+@app.route('/scatter')
+#@login_required
+def scatter():
+    label_name = "Test"
+    data = [{"x": 0, "y": 1},
+            {"x": 0.5, "y": 2.3},
+            {"x": 1, "y": 2},
+            {"x": 3, "y": 3}]
+    return render_template('scatter.html',
+                           label_name=label_name,
+                           data=data)
