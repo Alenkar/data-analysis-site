@@ -68,7 +68,7 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route('/usr/<username>')
+@app.route('/user/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
@@ -112,3 +112,10 @@ def scatter():
     return render_template('scatter.html',
                            label_name=label_name,
                            data=data)
+
+
+@app.route('/video')
+def video():
+    label_name = "Video"
+    return render_template('video.html',
+                           label_name=label_name)

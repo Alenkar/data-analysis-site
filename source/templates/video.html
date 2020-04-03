@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    video {
+        transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -ms-transform: scaleX(-1);
+        -moz-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+    }
+</style>
+<body>
+<script>
+    window.onload = function() {
+    var image = document.getElementById('image');
+    var canvas = document.getElementById('canvas');
+    var video = document.getElementById('video');
+    var button = document.getElementById('button');
+    var allow = document.getElementById('allow');
+    var context = canvas.getContext('2d');
+
+    var snapshot = function () {
+        context.translate(canvas.width, 0);
+        context.scale(-1, 1);
+        context.drawImage(video, 0, 0,
+                          video.width, video.height);
+        // Отправка на сервер
+        // var base64dataUrl = canvas.toDataURL('image/png');
+        // var img = new Image();
+        // img.src = base64dataUrl;
+        // window.document.body.appendChild(img);
+    }
+
+    button.addEventListener('click', snapshot);
+
+
+    // запрашиваем разрешение на доступ к поточному видео камеры
+    // navigator.mediaDevices.getUserMedia({video: true, audio: false})
+    //    .then(stream => {
+    //    video.srcObject = stream
+    //    }, function () {
+    //        console.log('что-то не так с видеостримом или пользователь запретил его использовать :P');
+    //    });
+    };
+
+    navigator.mediaDevices.getUserMedia(
+        {video: {facingMode: {ideal: 'environment'}}, audio: false}).then( function(stream) {
+        video.srcObject = stream;
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
+
+
+    </script>
+    <div class="item">
+        <span> video </span>
+        <video id="video" width="320" height="240" autoplay="autoplay" ></video>
+    </div>
+    <div class="item">
+        <span> img </span>
+        <canvas id="canvas" width="320" height="240"></canvas>
+    </div>
+
+    <input id="button" type="button" value="Жми!" />
+</body>
+</html>
